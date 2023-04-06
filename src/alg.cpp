@@ -2,8 +2,8 @@
 #include <string>
 #include <map>
 #include "tstack.h"
-int getPrior (char ch) {
-    switch(ch){
+int getPrior(char ch) {
+    switch (ch) {
     case '(':
         return 0;
     case ')':
@@ -21,68 +21,68 @@ int getPrior (char ch) {
     }
 }
 std::string infx2pstfx(std::string infx) {
-std::string pstfx;
-int i = 0;
-char x = infx[i];
-char temp = 0;
-TStack <char, 100> stChar;
-while (x) {
-    int pr = getPrior(x);
-    if (pr > -1) {
-        if ((pr == 0 || pr > getPrior(temp) || stChar.isEmpty()) && x != ')') {
-            if (stChar.isEmpty())
-                temp = x;
-            stChar.push(x);
-        } else if (x == ')') {
-            while (stChar.get() != '(') {
-                pstfx.push_back(stChar.get());
-                pstfx.push_back(' ');
-                stChar.pop();
-            }
-            stChar.pop();
-            if (stChar.isEmpty())
-                temp = 0;
-            } else {
-                while (!stChar.isEmpty() && getPrior(stChar.get()) >= pr) {
+    std::string pstfx;
+    int i = 0;
+    char x = infx[i];
+    char temp = 0;
+    TStack <char, 100> stChar;
+    while (x) {
+        int pr = getPrior(x);
+        if (pr > -1) {
+            if ((pr == 0 || pr > getPrior(temp) || stChar.isEmpty()) && x != ')') {
+                if (stChar.isEmpty())
+                    temp = x;
+                stChar.push(x);
+            } else if (x == ')') {
+                while (stChar.get() != '(') {
                     pstfx.push_back(stChar.get());
                     pstfx.push_back(' ');
                     stChar.pop();
                 }
+                stChar.pop();
                 if (stChar.isEmpty())
-                    temp = x;
-                stChar.push(x);
-            }
-    } else {
-        pstfx.push_back(x);
+                    temp = 0;
+                } else {
+                    while (!stChar.isEmpty() && getPrior(stChar.get()) >= pr) {
+                        pstfx.push_back(stChar.get());
+                        pstfx.push_back(' ');
+                        stChar.pop();
+                    }
+                    if (stChar.isEmpty())
+                        temp = x;
+                    stChar.push(x);
+                }
+        } else {
+            pstfx.push_back(x);
+            pstfx.push_back(' ');
+        }
+        x = infx[++i];
+    }
+    while (!stChar.isEmpty()) {
+        pstfx.push_back(stChar.get());
         pstfx.push_back(' ');
+        stChar.pop();
     }
-    x = infx[++i];
-}
-while (!stChar.isEmpty()) {
-    pstfx.push_back(stChar.get());
-    pstfx.push_back(' ');
-    stChar.pop();
-}
-    pstfx.erase(pstfx.end() - 1, pstfx.end());
-    return pstfx;
-}
-int count1(const int& n1, const int& n2, const int& oper) {
-    switch (oper) {
-    default:
-        break;
-    case '+': return n1 + n2;
-    case '-': return n1 - n2;
-    case '*': return n1 * n2;
-    case '/': return n1 / n2;
+        pstfx.erase(pstfx.end() - 1, pstfx.end());
+        return pstfx;
     }
-return 0;
+    int count1(const int& n1, const int& n2, const int& oper) {
+        switch (oper) {
+        default:
+            break;
+        case '+': return n1 + n2;
+        case '-': return n1 - n2;
+        case '*': return n1 * n2;
+        case '/': return n1 / n2;
+        }
+    return 0;
 }
 
 int eval(std::string prf) {
     TStack <int, 100> stInt;
     std::string num = "";
     for (int i = 0; i < prf.size(); i++) {
-        if (getPrior(prf[i]) == -1){
+        if (getPrior(prf[i]) == -1) {
             if (prf[i] == ' ') {
                 continue;
             } else if (isdigit(prf[i + 1])) {
@@ -98,8 +98,8 @@ int eval(std::string prf) {
           stInt.pop();
           int a = stInt.get();
           stInt.pop();
-          stInt.push(count(a, b, pref[i]));
+          stInt.push(count1(a, b, prf[i]));
         }
   }
-  return stack1.get();
+  return stInt.get();
 }
