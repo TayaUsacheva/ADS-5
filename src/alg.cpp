@@ -29,7 +29,8 @@ std::string infx2pstfx(std::string infx) {
     while (x) {
         int pr = getPrior(x);
         if (pr > -1) {
-            if ((pr == 0 || pr > getPrior(temp) || stChar.isEmpty()) && x != ')') {
+            if ((pr == 0 || pr > getPrior(temp) 
+                 || stChar.isEmpty()) && x != ')') {
                 if (stChar.isEmpty())
                     temp = x;
                 stChar.push(x);
