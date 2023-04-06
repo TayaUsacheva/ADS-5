@@ -99,8 +99,8 @@ int eval(std::string prf) {
           stInt.pop();
           int a = stInt.get();
           stInt.pop();
-          stInt.push(count(a, b, pref[i]));
+          stInt.push(count1(a, b, prf[i]));
         }
   }
-  return stack1.get();
+  return stInt.get();
 }
