@@ -20,11 +20,11 @@ int getPrior(char ch) {
         return -1;
     }
 }
-std::string space (const std::string& s) {
-  if (str.length() <= 2)
+std::string space(const std::string& s) {
+  if (s.length() <= 2)
     return s;
   int n = 2 - s.length() % 2;
-  std::string right(str, 0, n);
+  std::string right(s, 0, n);
   for (auto it = s.begin() + n; it != s.end();) {
     right += ' '; right += *it++;;
   }
@@ -32,14 +32,14 @@ std::string space (const std::string& s) {
 }
 
 std::string infx2pstfx(std::string inf) {
-  std::string pstfix;
+  std::string pstfx;
   TStack<char, 100> stChar;
   for (auto& operation : inf) {
     int priority = getPrior(operation);
     if (priority == -1) {
       pstfx += operation;
     } else {
-      if (stack.get() < priority || priority == 0 || stack.isEmpty()) {
+      if (stChar.get() < priority || priority == 0 || stChar.isEmpty()) {
         stChar.push(operation);
       } else if (operation == ')') {
         char character = stChar.get();
@@ -60,7 +60,7 @@ std::string infx2pstfx(std::string inf) {
       }
     }
   }
-  while (!stack.isEmpty()) {
+  while (!stChar.isEmpty()) {
     pstfx += stChar.get();
     stChar.pop();
   }
