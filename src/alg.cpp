@@ -20,63 +20,63 @@ int getPrior(char ch) {
         return -1;
     }
 }
-std::string infx2pstfx(std::string infx) {
-    std::string pstfx;
-    int i = 0;
-    char x = infx[i];
-    char temp = 0;
-    TStack <char, 100> stChar;
-    while (x) {
-        int pr = getPrior(x);
-        if (pr > -1) {
-            if ((pr == 0 || pr > getPrior(temp) 
-                 || stChar.isEmpty()) && x != ')') {
-                if (stChar.isEmpty())
-                    temp = x;
-                stChar.push(x);
-            } else if (x == ')') {
-                while (stChar.get() != '(') {
-                    pstfx.push_back(stChar.get());
-                    pstfx.push_back(' ');
-                    stChar.pop();
-                }
-                stChar.pop();
-                if (stChar.isEmpty())
-                    temp = 0;
-                } else {
-                    while (!stChar.isEmpty() && getPrior(stChar.get()) >= pr) {
-                        pstfx.push_back(stChar.get());
-                        pstfx.push_back(' ');
-                        stChar.pop();
-                    }
-                    if (stChar.isEmpty())
-                        temp = x;
-                    stChar.push(x);
-                }
-        } else {
-            pstfx.push_back(x);
-            pstfx.push_back(' ');
+std::string space (const std::string& s) {
+  if (str.length() <= 2)
+    return s;
+  int n = 2 - s.length() % 2;
+  std::string right(str, 0, n);
+  for (auto it = s.begin() + n; it != s.end();) {
+    right += ' '; right += *it++;;
+  }
+  return right;
+}
+
+std::string infx2pstfx(std::string inf) {
+  std::string pstfix;
+  TStack<char, 100> stChar;
+  for (auto& operation : inf) {
+    int priority = getPrior(operation);
+    if (priority == -1) {
+      pstfx += operation;
+    } else {
+      if (stack.get() < priority || priority == 0 || stack.isEmpty()) {
+        stChar.push(operation);
+      } else if (operation == ')') {
+        char character = stChar.get();
+        while (getPrior(character) >= priority) {
+          pstfx += character;
+          stChar.pop();
+          character = stChar.get();
         }
-        x = infx[++i];
-}
-while (!stChar.isEmpty()) {
-    pstfx.push_back(stChar.get());
-    pstfx.push_back(' ');
+        stChar.pop();
+      } else {
+        char character = stChar.get();
+        while (getPrior(character) >= priority) {
+          pstfx += character;
+          stChar.pop();
+          character = stChar.get();
+        }
+        stChar.push(operation);
+      }
+    }
+  }
+  while (!stack.isEmpty()) {
+    pstfx += stChar.get();
     stChar.pop();
-}
-    pstfx.erase(pstfx.end() - 1, pstfx.end());
-    return pstfx;
+  }
+  pstfx = space(pstfx);
+  return pstfx;
 }
 int count1(const int& n1, const int& n2, const int& oper) {
     switch (oper) {
-    default:
-        break;
-    case '+': return n1 + n2;
-    case '-': return n1 - n2;
-    case '*': return n1 * n2;
-    case '/': return n1 / n2;
+        default:
+            break;
+        case '+': return n1 + n2;
+        case '-': return n1 - n2;
+        case '*': return n1 * n2;
+        case '/': return n1 / n2;
     }
-return 0;
+    return 0;
 }
 
 int eval(std::string prf) {
