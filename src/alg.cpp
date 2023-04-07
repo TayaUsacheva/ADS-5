@@ -26,9 +26,9 @@ int getPrior(char ch) {
         prior[5].second = 3;
     }
     int pr = -1;
-    for (int i = 0; i < 6; ++i) {
-        if (ch == prior[i].first) {
-            pr = prior[i].second;
+    for (int j = 0; j < 6; ++j) {
+        if (ch == prior[j].first) {
+            pr = prior[j].second;
             break;
         }
     }
