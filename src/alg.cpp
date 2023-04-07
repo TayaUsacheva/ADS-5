@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include "tstack.h"
+
 int getPrior(char ch) {
     std::pair<char, int> prior[6];
     switch (ch) {
@@ -23,16 +24,15 @@ int getPrior(char ch) {
     case '/':
         prior[5].first = '/';
         prior[5].second = 3;
-    default:
-        return -1;
     }
     int pr = -1;
     for (int i = 0; i < 6; ++i) {
-        if (ch == prior[i].first){
+        if (ch == prior[i].first) {
             pr = prior[i].second;
             break;
         }
     }
+    return pr;
 }
 
 int count1(const int& n1, const int& n2, const int& oper) {
@@ -69,19 +69,19 @@ std::string infx2pstfx(std::string inf) {
       if (stChar.get() < priority || priority == 0 || stChar.isEmpty()) {
         stChar.push(operation);
       } else if (operation == ')') {
-        char character = stChar.get();
-        while (getPrior(character) >= priority) {
-          pstfx += character;
+        char ch = stChar.get();
+        while (getPrior(ch) >= priority) {
+          pstfx += ch;
           stChar.pop();
-          character = stChar.get();
+          ch = stChar.get();
         }
         stChar.pop();
       } else {
-        char character = stChar.get();
-        while (getPrior(character) >= priority) {
-          pstfx += character;
+        char ch = stChar.get();
+        while (getPrior(ch) >= priority) {
+          pstfx += ch;
           stChar.pop();
-          character = stChar.get();
+          ch = stChar.get();
         }
         stChar.push(operation);
       }
@@ -98,7 +98,7 @@ std::string infx2pstfx(std::string inf) {
 int eval(std::string prf) {
     TStack <int, 100> stInt;
     std::string rez = "";
-    for (int i = 0; i < prf.size(); i++) {
+    for (size_t i = 0; i < prf.size(); i++) {
         if (getPrior(prf[i]) == -1) {
             if (prf[i] == ' ') {
                 continue;
