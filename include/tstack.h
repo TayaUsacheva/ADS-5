@@ -15,22 +15,19 @@ class TStack {
 
   void push(T value) {
       if (isFull()) {
-          throw std::string("Full!");
+          throw std::string("Stack is full");
       } else {
           arr[++top] = value;
       }
   }
     const T& pop() {
         if (isEmpty())
-            throw std::string("Empty!");
+            throw std::string("Stack is empty");
         else
             return arr[top--];
     }
     const T& get()const {
-        if (isEmpty())
-            throw std::string("Empty!");
-        else
-            return arr[top];
+        return arr[top];
     }
     bool isEmpty()const {
         return top == -1;
