@@ -17,16 +17,16 @@ class TStack {
       if (isFull()) {
           throw std::string("Full!");
       } else {
-          arr[++top];
+          arr[++top] = value;
       }
   }
-    T pop() {
+    const T& pop() {
         if (isEmpty())
             throw std::string("Empty!");
         else
             return arr[top--];
     }
-    T get()const {
+    const T& get()const {
         if (isEmpty())
             throw std::string("Empty!");
         else
